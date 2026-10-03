@@ -511,7 +511,11 @@ const server = http.createServer(async (req, res) => {
     }
 
     // Static File Serving (fallback for direct browser access)
-    let filePath = path.join(__dirname, pathname === '/' ? 'index.html' : pathname);
+    let filePath = path.join(
+    __dirname,
+    'frontend',
+    pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, '')
+);
     if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
       const ext = path.extname(filePath).toLowerCase();
       const mimeTypes = {
