@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitCore Pro | Gym Management System (DA-2)</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Chart.js for Interactive Visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- ========================================================
+       SIDEBAR NAVIGATION
+       ======================================================== -->
+  <aside class="sidebar">
+    <div class="brand-section">
+      <div class="brand-icon">F</div>
+      <div class="brand-info">
+        <h2>FitCore Pro</h2>
+        <span>GYM DATABASE OS</span>
+      </div>
+    </div>
+
+    <div class="nav-wrapper">
+      <div class="nav-group-title">Main Overview</div>
+      <button class="nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
+        <div class="nav-item-left">
+          <div class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          </div>
+          <span>Dashboard</span>
+        </div>
+      </button>
+
+      <button class="nav-item" data-page="members" onclick="navigateTo('members')">
+        <div class="nav-item-left">
+          <div class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
+          <span>Members</span>
+        </div>
+        <span class="nav-badge" id="nav-badge-members">8</span>
+      </button>
+
+      <button class="nav-item" data-page="trainers" onclick="navigateTo('trainers')">
+        <div class="nav-item-left">
+          <div class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          </div>
+          <span>Trainers</span>
+        </div>
+        <span class="nav-badge" id="nav-badge-trainers">4</span>
+      </button>
+
+      <button class="nav-item" data-page="equipment" onclick="navigateTo('equipment')">
+        <div class="nav-item-left">
+          <div class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 5v14M18 5v14M3 9v6M21 9v6M6 12h12"></path></svg>
+          </div>
+          <span>Equipment</span>
+        </div>
+        <span class="nav-badge" id="nav-badge-equipment">6</span>
+      </button>
+
+      <div class="nav-group-title">Operations</div>
+      <button class="nav-item" data-page="usage" onclick="navigateTo('usage')">
+        <div class="nav-item-left">
+          <div class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          </div>
+          <span>Equipment Usage</span>
+        </div>
+        <span class="nav-badge" id="nav-badge-usage">7</span>
+      </button>
+
+      <button class="nav-item" data-page="maintenance" onclick="navigateTo('maintenance')">
+        <div class="nav-item-left">
+          <div class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+          </div>
+          <span>Maintenance</span>
+        </div>
+        <span class="nav-badge" id="nav-badge-maintenance">4</span>
+      </button>
+
+      <button class="nav-item" data-page="payments" onclick="navigateTo('payments')">
+        <div class="nav-item-left">
+          <div class="nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+          </div>
+          <span>Payments</span>
+        </div>
+        <span class="nav-badge" id="nav-badge-payments">8</span>
+      </button>
+
+      <div class="nav-group-title">DA-2 Review Suite</div>
+      <button class="nav-item" data-page="sql" onclick="navigateTo('sql')">
+        <div class="nav-item-left">
+          <div class="nav-icon" style="color:var(--accent-cyan);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+          </div>
+          <span>10 SQL Queries</span>
+        </div>
+        <span class="nav-badge" style="background:rgba(6,182,212,0.2); color:var(--accent-cyan);">10/10</span>
+      </button>
+
+      <button class="nav-item" data-page="plsql" onclick="navigateTo('plsql')">
+        <div class="nav-item-left">
+          <div class="nav-icon" style="color:var(--accent-amber);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          </div>
+          <span>PL/SQL Demonstrator</span>
+        </div>
+        <span class="nav-badge" style="background:rgba(245,158,11,0.2); color:var(--accent-amber);">Proc/Trg</span>
+      </button>
+
+      <button class="nav-item" data-page="report" onclick="navigateTo('report')">
+        <div class="nav-item-left">
+          <div class="nav-icon" style="color:var(--accent-neon);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          </div>
+          <span>DA-2 Project Report</span>
+        </div>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-profile">
+        <div class="user-avatar">AD</div>
+        <div class="user-details">
+          <strong>Gym Administrator</strong>
+          <span>DA-2 Review Ready</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========================================================
+       MAIN WRAPPER & TOPBAR
+       ======================================================== -->
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 id="topbar-title">Dashboard</h1>
+        <p id="topbar-subtitle">Executive overview of gym operations & assets</p>
+      </div>
+
+      <div class="topbar-right">
+        <!-- Live Search -->
+        <div class="search-box">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="globalSearch" class="search-input" placeholder="Quick search..." onkeyup="filterTable(activePage)" />
+          <span class="kbd-shortcut">Ctrl K</span>
+        </div>
+
+        <!-- Connection Pill -->
+        <div id="connectionPill" class="status-pill">
+          <span class="status-dot"></span>
+          <span>Checking DB...</span>
+        </div>
+
+        <!-- Quick Action Trigger -->
+        <button class="btn-primary" onclick="openAddModal(activePage === 'dashboard' ? 'members' : activePage)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>+ Add Record</span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+
+        <!-- Refresh Button -->
+        <button class="icon-btn" onclick="navigateTo(activePage)" title="Refresh Data">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ========================================================
+         PAGE CONTENT CONTAINER
+         ======================================================== -->
+    <main class="page-container">
+
+      <!-- ==================== 1. DASHBOARD ==================== -->
+      <section id="page-dashboard" class="page active">
+        <!-- Hero Welcome -->
+        <div class="hero-banner">
+          <div class="hero-content">
+            <span class="hero-tag">ENTERPRISE FITNESS OS</span>
+            <h2>Manage your gym, <span>10x smarter.</span></h2>
+            <p>Complete relational database system for athletes, equipment lifecycle, certified trainers, workout session logs, maintenance and billing.</p>
+            <div class="hero-actions">
+              <button class="btn-primary" onclick="openAddModal('members')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span>Enroll Member</span>
+              </button>
+              <button class="btn-secondary" onclick="openAddModal('usage')">Log Equipment Usage</button>
+              <button class="btn-secondary" onclick="openAddModal('payments')">Record Payment</button>
+            </div>
+          </div>
+          <div class="hero-badge-group">
+            <div class="da2-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <span>DA-2 Verified: BCNF Normalized</span>
+            </div>
+            <div class="da2-badge" style="border-color: rgba(6,182,212,0.3); color: var(--accent-cyan);">
+              <span>10 SQL Queries + PL/SQL Online</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Stat Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-label">Total Members</span>
+              <div class="stat-icon-wrapper purple">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+              </div>
+            </div>
+            <div class="stat-value" id="kpi-members">8</div>
+            <div class="stat-meta positive">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+              <span>100% active roster</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-label">Certified Trainers</span>
+              <div class="stat-icon-wrapper blue">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
+            </div>
+            <div class="stat-value" id="kpi-trainers">4</div>
+            <div class="stat-meta info">
+              <span>Strength, Cardio, Yoga</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-label">Gym Equipment</span>
+              <div class="stat-icon-wrapper amber">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 5v14M18 5v14M3 9v6M21 9v6M6 12h12"></path></svg>
+              </div>
+            </div>
+            <div class="stat-value" id="kpi-equipment">6</div>
+            <div class="stat-meta warning">
+              <span>Cardio, Strength, Free-wt</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-label">Paid Revenue</span>
+              <div class="stat-icon-wrapper green">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              </div>
+            </div>
+            <div class="stat-value" id="kpi-revenue">₹73,500</div>
+            <div class="stat-meta positive" id="kpi-pending">
+              <span>₹20,000 pending</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 Column Analytics & Status -->
+        <div class="dashboard-grid-2">
+          <!-- Left: Revenue & Maintenance Graph -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Revenue & Maintenance Cashflow</h3>
+                <p>Monthly dues collected vs machinery servicing expenses</p>
+              </div>
+              <span class="badge badge-paid">FY 2024-25</span>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="chart-revenue-overview"></canvas>
+            </div>
+          </div>
+
+          <!-- Right: Equipment Operational Health -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Equipment Status</h3>
+                <p>Current operational fleet readiness</p>
+              </div>
+            </div>
+            <div class="equipment-health-list">
+              <div class="health-item">
+                <div class="health-item-header">
+                  <span style="color:var(--accent-neon);">Available for Training</span>
+                  <span id="count-available">5 (83%)</span>
+                </div>
+                <div class="health-progress-bar">
+                  <div id="bar-available" class="health-progress-fill fill-available" style="width: 83%;"></div>
+                </div>
+              </div>
+
+              <div class="health-item">
+                <div class="health-item-header">
+                  <span style="color:var(--accent-amber);">In Maintenance / Repair</span>
+                  <span id="count-maintenance">1 (17%)</span>
+                </div>
+                <div class="health-progress-bar">
+                  <div id="bar-maintenance" class="health-progress-fill fill-maintenance" style="width: 17%;"></div>
+                </div>
+              </div>
+
+              <div class="health-item">
+                <div class="health-item-header">
+                  <span style="color:var(--accent-rose);">Decommissioned / Unavailable</span>
+                  <span id="count-unavailable">0 (0%)</span>
+                </div>
+                <div class="health-progress-bar">
+                  <div id="bar-unavailable" class="health-progress-fill fill-unavailable" style="width: 0%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tier Distribution Mini Donut -->
+            <div style="margin-top: 24px;">
+              <h4 style="font-size:13px; font-weight:700; margin-bottom:8px; color:var(--text-muted);">Membership Tiers</h4>
+              <div style="height: 120px; position:relative;">
+                <canvas id="chart-membership-tier"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Registered Members Table -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <div>
+              <h3>Recent Gym Athletes</h3>
+              <p>Latest registered members in the database</p>
+            </div>
+            <button class="btn-secondary" onclick="navigateTo('members')">View All Members →</button>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Member Info</th>
+                  <th>Membership Tier</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-recent-members">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 2. MEMBERS ==================== -->
+      <section id="page-members" class="page">
+        <div class="toolbar-row">
+          <div class="filters-group">
+            <input type="text" id="search-members" class="custom-input" placeholder="Search members by name/phone/ID..." onkeyup="filterTable('members')" style="width:280px;" />
+            <select id="filter-members" class="custom-select" onchange="filterTable('members')">
+              <option value="all">All Membership Tiers</option>
+              <option value="premium">Premium</option>
+              <option value="standard">Standard</option>
+              <option value="basic">Basic</option>
+            </select>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="badge badge-basic" id="count-badge-members">8 total</span>
+            <button class="btn-primary" onclick="openAddModal('members')">+ Add Member</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Member ID</th>
+                <th>Member Details</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Phone</th>
+                <th>Tier</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-body-members">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==================== 3. TRAINERS ==================== -->
+      <section id="page-trainers" class="page">
+        <div class="toolbar-row">
+          <div class="filters-group">
+            <input type="text" id="search-trainers" class="custom-input" placeholder="Search trainers..." onkeyup="filterTable('trainers')" style="width:260px;" />
+            <select id="filter-trainers" class="custom-select" onchange="filterTable('trainers')">
+              <option value="all">All Specializations</option>
+              <option value="strength">Strength</option>
+              <option value="cardio">Cardio</option>
+              <option value="weight loss">Weight Loss</option>
+              <option value="yoga">Yoga</option>
+            </select>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="badge badge-basic" id="count-badge-trainers">4 total</span>
+            <button class="btn-primary" onclick="openAddModal('trainers')">+ Add Trainer</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Trainer ID</th>
+                <th>Trainer Name</th>
+                <th>Phone</th>
+                <th>Specialization</th>
+                <th>Experience</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-body-trainers">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==================== 4. EQUIPMENT ==================== -->
+      <section id="page-equipment" class="page">
+        <div class="toolbar-row">
+          <div class="filters-group">
+            <input type="text" id="search-equipment" class="custom-input" placeholder="Search equipment..." onkeyup="filterTable('equipment')" style="width:260px;" />
+            <select id="filter-equipment" class="custom-select" onchange="filterTable('equipment')">
+              <option value="all">All Categories</option>
+              <option value="cardio">Cardio</option>
+              <option value="strength">Strength</option>
+              <option value="free weight">Free Weight</option>
+            </select>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="badge badge-basic" id="count-badge-equipment">6 total</span>
+            <button class="btn-primary" onclick="openAddModal('equipment')">+ Add Equipment</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Equipment ID</th>
+                <th>Name & Brand</th>
+                <th>Category</th>
+                <th>Purchase Date</th>
+                <th>Condition</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-body-equipment">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==================== 5. USAGE ==================== -->
+      <section id="page-usage" class="page">
+        <div class="toolbar-row">
+          <div class="filters-group">
+            <input type="text" id="search-usage" class="custom-input" placeholder="Search usage logs..." onkeyup="filterTable('usage')" style="width:260px;" />
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="badge badge-basic" id="count-badge-usage">7 logs</span>
+            <button class="btn-primary" onclick="openAddModal('usage')">+ Log Usage Session</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Usage ID</th>
+                <th>Member ID</th>
+                <th>Equipment ID</th>
+                <th>Trainer ID</th>
+                <th>Usage Date</th>
+                <th>Duration</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-body-usage">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==================== 6. MAINTENANCE ==================== -->
+      <section id="page-maintenance" class="page">
+        <div class="toolbar-row">
+          <div class="filters-group">
+            <input type="text" id="search-maintenance" class="custom-input" placeholder="Search maintenance..." onkeyup="filterTable('maintenance')" style="width:260px;" />
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="badge badge-basic" id="count-badge-maintenance">4 records</span>
+            <button class="btn-primary" onclick="openAddModal('maintenance')">+ Schedule Maintenance</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Maintenance ID</th>
+                <th>Equipment ID</th>
+                <th>Service Date</th>
+                <th>Technician</th>
+                <th>Cost</th>
+                <th>Remarks</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-body-maintenance">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==================== 7. PAYMENTS ==================== -->
+      <section id="page-payments" class="page">
+        <div class="toolbar-row">
+          <div class="filters-group">
+            <input type="text" id="search-payments" class="custom-input" placeholder="Search invoices..." onkeyup="filterTable('payments')" style="width:260px;" />
+            <select id="filter-payments" class="custom-select" onchange="filterTable('payments')">
+              <option value="all">All Statuses</option>
+              <option value="paid">Paid</option>
+              <option value="pending">Pending</option>
+            </select>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="badge badge-basic" id="count-badge-payments">8 invoices</span>
+            <button class="btn-primary" onclick="openAddModal('payments')">+ Record Payment</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Payment ID</th>
+                <th>Member ID</th>
+                <th>Amount (₹)</th>
+                <th>Date</th>
+                <th>Mode</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-body-payments">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==================== 8. SQL STUDIO (10 QUERIES) ==================== -->
+      <section id="page-sql" class="page">
+        <div class="custom-runner-card">
+          <div class="panel-header">
+            <div>
+              <h3>Interactive SQL Query Studio</h3>
+              <p>Type any SQL statement to test on the live database</p>
+            </div>
+            <button class="btn-primary" onclick="runCustomSQL()">▶ Execute Custom SQL</button>
+          </div>
+          <textarea id="customSqlInput" class="sql-textarea" placeholder="SELECT * FROM MEMBER WHERE MEMBERSHIP_TYPE='Premium';">SELECT * FROM MEMBER WHERE MEMBERSHIP_TYPE='Premium';</textarea>
+          <div id="customSqlOutput" class="query-result-modal"></div>
+        </div>
+
+        <h3 style="font-size: 18px; font-weight: 800; margin: 32px 0 16px;">The 10 Required DBMS Academic Queries</h3>
+        <p style="color:var(--text-muted); font-size:13.5px; margin-bottom:24px;">Prepared specifically for the DA-2 review, covering Multi-table JOINs, GROUP BY & HAVING, Correlated Subqueries, Conditional CASE aggregations, Window functions, and UNION set operations.</p>
+
+        <!-- 10 Queries Grid -->
+        <div class="query-grid" id="queryGrid">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- ==================== 9. PL/SQL DEMONSTRATOR ==================== -->
+      <section id="page-plsql" class="page">
+        <div style="margin-bottom: 24px;">
+          <h3 style="font-size: 20px; font-weight: 800;">PL/SQL Stored Objects & Test Bench</h3>
+          <p style="color:var(--text-muted); font-size:13.5px; margin-top:4px;">Live interactive execution demonstrating Oracle PL/SQL Stored Procedures, Functions, Triggers, and Explicit Cursors.</p>
+        </div>
+
+        <div class="plsql-grid">
+          <!-- Stored Procedure Box -->
+          <div class="simulator-box">
+            <span class="query-number">1. Stored Procedure with Exceptions</span>
+            <h4 style="font-size:16px; margin: 6px 0;">SP_REGISTER_MEMBER</h4>
+            <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:14px;">Validates minimum age (>= 14) and catches duplicate key exceptions (DUP_VAL_ON_INDEX).</p>
+
+            <div class="form-grid-2" style="margin-bottom:14px;">
+              <div class="form-group">
+                <label>Member ID</label>
+                <input id="sp_id" class="custom-input" value="M009" />
+              </div>
+              <div class="form-group">
+                <label>Name</label>
+                <input id="sp_name" class="custom-input" value="Rohan Gupta" />
+              </div>
+              <div class="form-group">
+                <label>Age (Test &lt; 14)</label>
+                <input id="sp_age" type="number" class="custom-input" value="21" />
+              </div>
+              <div class="form-group">
+                <label>Gender</label>
+                <select id="sp_gender" class="custom-select">
+                  <option>Male</option><option>Female</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Phone</label>
+                <input id="sp_phone" class="custom-input" value="9876543299" />
+              </div>
+              <div class="form-group">
+                <label>Membership</label>
+                <select id="sp_type" class="custom-select">
+                  <option>Premium</option><option>Standard</option><option>Basic</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="btn-primary" style="width:100%; justify-content:center;" onclick="testProcedure()">▶ Call SP_REGISTER_MEMBER</button>
+
+            <div style="margin-top:14px;">
+              <label style="font-size:11px; font-weight:700; color:var(--text-muted);">DBMS_OUTPUT Console:</label>
+              <pre class="dbms-console" id="plsql-console-proc">> Awaiting procedure execution...</pre>
+            </div>
+          </div>
+
+          <!-- Stored Function Box -->
+          <div class="simulator-box">
+            <span class="query-number">2. Stored Function</span>
+            <h4 style="font-size:16px; margin: 6px 0;">FN_GET_MEMBER_TOTAL_PAID</h4>
+            <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:14px;">Accepts a Member ID and computes total verified payments collected to date.</p>
+
+            <div class="form-group" style="margin-bottom:16px;">
+              <label>Select Member to Query:</label>
+              <select id="fnMemberSelect" class="custom-select"></select>
+            </div>
+
+            <button class="btn-primary" style="width:100%; justify-content:center;" onclick="testFunction()">▶ Execute Function in SQL</button>
+
+            <div style="margin-top:20px;">
+              <label style="font-size:11px; font-weight:700; color:var(--text-muted);">Execution Trace:</label>
+              <pre class="dbms-console" id="plsql-console-fn">> Select a member and run function...</pre>
+            </div>
+          </div>
+
+          <!-- Trigger Box -->
+          <div class="simulator-box">
+            <span class="query-number">3. Database Trigger</span>
+            <h4 style="font-size:16px; margin: 6px 0;">TRG_EQUIPMENT_MAINT_STATUS</h4>
+            <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:14px;">AFTER INSERT ON MAINTENANCE: Automatically flips equipment STATUS to 'Maintenance'.</p>
+            <pre class="code-snippet"><code>CREATE OR REPLACE TRIGGER TRG_EQUIPMENT_MAINT_STATUS
+AFTER INSERT ON MAINTENANCE
+FOR EACH ROW
+BEGIN
+    UPDATE EQUIPMENT
+    SET STATUS = 'Maintenance'
+    WHERE EQUIPMENT_ID = :NEW.EQUIPMENT_ID;
+END;</code></pre>
+            <button class="btn-secondary" style="width:100%; justify-content:center;" onclick="openAddModal('maintenance')">+ Test Trigger via New Maintenance</button>
+          </div>
+
+          <!-- Cursor Box -->
+          <div class="simulator-box">
+            <span class="query-number">4. Explicit Cursor & Loop</span>
+            <h4 style="font-size:16px; margin: 6px 0;">CUR_TRAINER_WORKLOAD</h4>
+            <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:14px;">Demonstrates cursor declaration, OPEN, FETCH with %NOTFOUND, and formatted DBMS_OUTPUT logs.</p>
+            <button class="btn-primary" style="width:100%; justify-content:center; margin-bottom:14px;" onclick="testCursor()">▶ Run Cursor Anonymous Block</button>
+            <pre class="dbms-console" id="plsql-console-cur">> Click above to run explicit cursor...</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 10. DA-2 PROJECT REPORT ==================== -->
+      <section id="page-report" class="page">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+          <div>
+            <h3 style="font-size:22px; font-weight:800;">DA-2 Project Evaluation Report</h3>
+            <p style="font-size:13px; color:var(--text-muted);">Generated on <span id="report-timestamp">October 2024</span> · Individual Submission</p>
+          </div>
+          <button class="btn-primary" onclick="printReport()">🖨️ Print / Save as PDF</button>
+        </div>
+
+        <div class="report-paper">
+          <h2>FITCORE GYM MANAGEMENT SYSTEM</h2>
+          <p style="color:var(--accent-cyan); font-weight:700; margin-bottom:20px;">COURSE: DATABASE MANAGEMENT SYSTEMS · DIGITAL ASSIGNMENT 2</p>
+
+          <div class="report-section">
+            <h3>1. Problem Statement & System Scope</h3>
+            <p style="font-size:13.5px; line-height:1.6; color:#cbd5e1;">The FitCore Gym Management System is a database-driven platform engineered to streamline gym center operations. It manages members, certified personal trainers, exercise machinery, supervised equipment usage logs, machinery servicing/maintenance, and membership payment transactions. The system enforces relational integrity across all tables and eliminates data anomalies through BCNF normalization.</p>
+          </div>
+
+          <div class="report-section">
+            <h3>2. Relational Schema & Cardinalities (Matching DA1)</h3>
+            <ul style="font-size:13px; line-height:1.8; color:#cbd5e1; padding-left:20px;">
+              <li><b>MEMBER</b> (<u>Member_ID</u>, Member_Name, Age, Gender, Phone, Membership_Type, Join_Date)</li>
+              <li><b>TRAINER</b> (<u>Trainer_ID</u>, Trainer_Name, Phone, Specialization, Experience)</li>
+              <li><b>EQUIPMENT</b> (<u>Equipment_ID</u>, Equipment_Name, Category, Brand, Purchase_Date, Condition, Status)</li>
+              <li><b>EQUIPMENT_USAGE</b> (<u>Usage_ID</u>, <i>Member_ID</i>, <i>Equipment_ID</i>, <i>Trainer_ID</i>, Usage_Date, Duration)</li>
+              <li><b>MAINTENANCE</b> (<u>Maintenance_ID</u>, <i>Equipment_ID</i>, Maintenance_Date, Technician_Name, Cost, Remarks)</li>
+              <li><b>PAYMENT</b> (<u>Payment_ID</u>, <i>Member_ID</i>, Amount, Payment_Date, Payment_Mode, Status)</li>
+            </ul>
+            <div style="margin-top:12px; font-size:12.5px; color:var(--accent-neon);">
+              <b>Cardinalities:</b> Equipment → Maintenance (1:M) · Member → Equipment_Usage (1:M) · Equipment → Equipment_Usage (1:M) · Trainer → Equipment_Usage (1:M) · Member → Payment (1:N)
+            </div>
+          </div>
+
+          <div class="report-section">
+            <h3>3. Normalization Verification (1NF to BCNF)</h3>
+            <div style="font-size:13px; line-height:1.7; color:#cbd5e1;">
+              <p><b>1NF:</b> All attributes contain atomic, indivisible values. No multi-valued or repeating groups exist.</p>
+              <p><b>2NF:</b> Relations are in 1NF and every non-prime attribute is fully functionally dependent on the entire primary key. Because all entity tables have single-attribute primary keys, partial dependency is impossible.</p>
+              <p><b>3NF:</b> Relations are in 2NF with no transitive dependencies (X → Y → Z). Decomposed usage, maintenance, and payment relations eliminate redundant entity attributes.</p>
+              <p><b>BCNF:</b> For every functional dependency X → Y, determinant X is a candidate key. Hence all decomposed relations strictly satisfy Boyce-Codd Normal Form.</p>
+            </div>
+          </div>
+
+          <div class="report-section">
+            <h3>4. Summary of 10 Required Queries Implemented</h3>
+            <ol style="font-size:12.5px; line-height:1.7; color:#cbd5e1; padding-left:20px;">
+              <li><b>Multi-Table JOIN (4 Tables):</b> Audit of usage sessions with Member, Equipment, and Trainer details.</li>
+              <li><b>GROUP BY & HAVING:</b> Identifies equipment categories with total maintenance exceeding ₹2,000.</li>
+              <li><b>Correlated Subquery with NOT EXISTS:</b> Finds inactive members with zero equipment workouts.</li>
+              <li><b>Conditional Aggregation & CASE:</b> Revenue collected vs pending dues grouped by membership tier.</li>
+              <li><b>Subquery with AVG Comparison:</b> Maintenance repair incidents costing above the gym facility average.</li>
+              <li><b>Trainer Workload Analysis:</b> Aggregates sessions supervised and unique client reach per coach.</li>
+              <li><b>Financial Defaulters Report:</b> Pulls pending member dues with phone contacts for recovery.</li>
+              <li><b>Asset Health & Lifecycle ROI:</b> Cumulative repair expense tracked against current machine condition.</li>
+              <li><b>UNION Set Operation:</b> Master directory consolidating member and trainer contacts into a single roster.</li>
+              <li><b>Analytical Window Function (DENSE_RANK):</b> Ranks machines by workout popularity within category.</li>
+            </ol>
+          </div>
+
+          <div class="report-section">
+            <h3>5. PL/SQL Implementation Summary</h3>
+            <p style="font-size:13px; line-height:1.6; color:#cbd5e1;">
+              Includes stored procedure <code>SP_REGISTER_MEMBER</code> with validation and <code>DUP_VAL_ON_INDEX</code> error handling, stored function <code>FN_GET_MEMBER_TOTAL_PAID</code>, database trigger <code>TRG_EQUIPMENT_MAINT_STATUS</code>, and explicit cursor <code>CUR_TRAINER_WORKLOAD</code>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ========================================================
+     MODAL DIALOG (CRUD INSERT / UPDATE)
+     ======================================================== -->
+<div id="crudModal" class="modal-overlay" onclick="if(event.target===this)closeCrudModal()">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle">Add Record</h3>
+      <button class="modal-close" onclick="closeCrudModal()">&times;</button>
+    </div>
+    <form id="crudForm" onsubmit="handleModalSubmit(event)">
+      <div id="modalFormBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeCrudModal()">Cancel</button>
+        <button type="submit" id="modalSubmitBtn" class="btn-primary">Save Record</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast Notifications -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- JavaScript Application Logic -->
+<script src="app.js"></script>
+
+</body>
+</html>

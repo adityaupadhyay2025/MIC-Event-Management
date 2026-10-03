@@ -1,0 +1,13 @@
+{
+  "name": "fitcore-gym-management-da2",
+  "version": "2.0.0",
+  "description": "FitCore Gym Management System - DA2 Implementation",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["gym-management", "dbms", "da2", "sql", "plsql"],
+  "author": "Student",
+  "license": "ISC"
+}
